@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prédire le Segment Client</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-4xl">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Prédire le Segment d'un Client</h1>
+        
+        <nav class="flex justify-center space-x-4 mb-6">
+            <a href="{{ url_for('index') }}" class="px-4 py-2 text-blue-600 bg-blue-100 rounded-lg shadow-md hover:bg-blue-200 transition-colors">Accueil</a>
+            <a href="{{ url_for('segments_overview') }}" class="px-4 py-2 text-blue-600 bg-blue-100 rounded-lg shadow-md hover:bg-blue-200 transition-colors">Aperçu des Segments</a>
+        </nav>
+
+        {% if error_message %}
+            <div class="bg-red-100 text-red-700 p-3 rounded-lg mb-4">
+                {{ error_message }}
+            </div>
+        {% endif %}
+
+        <form action="{{ url_for('segment_predict') }}" method="post" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Gender -->
+                <div>
+                    <label for="gender" class="block text-sm font-medium text-gray-700">Genre</label>
+                    <select id="gender" name="gender" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                        {% for option in form_options.gender %}
+                            <option value="{{ option }}">{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- SeniorCitizen -->
+                <div>
+                    <label for="SeniorCitizen" class="block text-sm font-medium text-gray-700">Citoyen Senior</label>
+                    <select id="SeniorCitizen" name="SeniorCitizen" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                        {% for option in form_options.SeniorCitizen %}
+                            <option value="{{ option }}">{{ "Oui" if option == 1 else "Non" }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- Partner -->
+                <div>
+                    <label for="Partner" class="block text-sm font-medium text-gray-700">Partenaire</label>
+                    <select id="Partner" name="Partner" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                        {% for option in form_options.Partner %}
+                            <option value="{{ option }}">{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- Dependents -->
+                <div>
+                    <label for="Dependents" class="block text-sm font-medium text-gray-700">Personnes à charge</label>
+                    <select id="Dependents" name="Dependents" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                        {% for option in form_options.Dependents %}
+                            <option value="{{ option }}">{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- Tenure -->
+                <div>
+                    <label for="tenure" class="block text-sm font-medium text-gray-700">Ancienneté (mois)</label>
+                    <input type="number" id="tenure" name="tenure" min="0" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                </div>
+                <!-- PhoneService -->
+                <div>
+                    <label for="PhoneService" class="block text-sm font-medium text-gray-700">Service Téléphonique</label>
+                    <select id="PhoneService" name="PhoneService" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                        {% for option in form_options.PhoneService %}
+                            <option value="{{ option }}">{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- MultipleLines -->
+                <div>
+                    <label for="MultipleLines" class="block text-sm font-medium text-gray-700">Lignes Multiples</label>
+                    <select id="MultipleLines" name="MultipleLines" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                        {% for option in form_options.MultipleLines %}
+                            <option value="{{ option }}">{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- InternetService -->
+                <div>
+                    <label for="InternetService" class="block text-sm font-medium text-gray-700">Service Internet</label>
+                    <select id="InternetService" name="InternetService" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                        {% for option in form_options.InternetService %}
+                            <option value="{{ option }}">{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- OnlineSecurity -->
+                <div>
+                    <label for="OnlineSecurity" class="block text-sm font-medium text-gray-700">Sécurité en Ligne</label>
+                    <select id="OnlineSecurity" name="OnlineSecurity" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                        {% for option in form_options.OnlineSecurity %}
+                            <option value="{{ option }}">{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- OnlineBackup -->
+                <div>
+                    <label for="OnlineBackup" class="block text-sm font-medium text-gray-700">Sauvegarde en Ligne</label>
+                    <select id="OnlineBackup" name="OnlineBackup" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                        {% for option in form_options.OnlineBackup %}
+                            <option value="{{ option }}">{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- DeviceProtection -->
+                <div>
+                    <label for="DeviceProtection" class="block text-sm font-medium text-gray-700">Protection des Appareils</label>
+                    <select id="DeviceProtection" name="DeviceProtection" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                        {% for option in form_options.DeviceProtection %}
+                            <option value="{{ option }}">{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- TechSupport -->
+                <div>
+                    <label for="TechSupport" class="block text-sm font-medium text-gray-700">Support Technique</label>
+                    <select id="TechSupport" name="TechSupport" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                        {% for option in form_options.TechSupport %}
+                            <option value="{{ option }}">{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- StreamingTV -->
+                <div>
+                    <label for="StreamingTV" class="block text-sm font-medium text-gray-700">TV en Streaming</label>
+                    <select id="StreamingTV" name="StreamingTV" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                        {% for option in form_options.StreamingTV %}
+                            <option value="{{ option }}">{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- StreamingMovies -->
+                <div>
+                    <label for="StreamingMovies" class="block text-sm font-medium text-gray-700">Films en Streaming</label>
+                    <select id="StreamingMovies" name="StreamingMovies" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                        {% for option in form_options.StreamingMovies %}
+                            <option value="{{ option }}">{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- Contract -->
+                <div>
+                    <label for="Contract" class="block text-sm font-medium text-gray-700">Contrat</label>
+                    <select id="Contract" name="Contract" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                        {% for option in form_options.Contract %}
+                            <option value="{{ option }}">{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- PaperlessBilling -->
+                <div>
+                    <label for="PaperlessBilling" class="block text-sm font-medium text-gray-700">Facturation sans papier</label>
+                    <select id="PaperlessBilling" name="PaperlessBilling" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                        {% for option in form_options.PaperlessBilling %}
+                            <option value="{{ option }}">{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- PaymentMethod -->
+                <div>
+                    <label for="PaymentMethod" class="block text-sm font-medium text-gray-700">Méthode de paiement</label>
+                    <select id="PaymentMethod" name="PaymentMethod" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                        {% for option in form_options.PaymentMethod %}
+                            <option value="{{ option }}">{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- MonthlyCharges -->
+                <div>
+                    <label for="MonthlyCharges" class="block text-sm font-medium text-gray-700">Frais Mensuels</label>
+                    <input type="number" step="0.01" id="MonthlyCharges" name="MonthlyCharges" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                </div>
+                <!-- TotalCharges -->
+                <div>
+                    <label for="TotalCharges" class="block text-sm font-medium text-gray-700">Frais Totaux</label>
+                    <input type="number" step="0.01" id="TotalCharges" name="TotalCharges" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                </div>
+            </div>
+            
+            <button type="submit" class="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-colors">
+                Prédire le Segment
+            </button>
+        </form>
+
+        {% if predicted_segment_name %}
+            <div class="mt-8 p-6 bg-blue-50 rounded-lg border border-blue-200 text-left">
+                <h2 class="text-xl font-bold text-blue-800 mb-4">Segment Prédit : {{ predicted_segment_name }}</h2>
+                <p class="text-gray-700 mb-2">Ce client appartient au segment caractérisé par :</p>
+                <ul class="list-disc list-inside text-gray-600">
+                    {% for key, value in predicted_segment_profile.items() %}
+                        <li><strong>{{ key }} :</strong> {{ value }}</li>
+                    {% endfor %}
+                </ul>
+                <p class="mt-4 text-sm text-gray-500">
+                    *Les valeurs numériques sont des moyennes, et les valeurs catégorielles sont les modes (catégories les plus fréquentes) pour ce segment.
+                </p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

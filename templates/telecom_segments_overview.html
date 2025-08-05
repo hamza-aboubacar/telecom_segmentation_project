@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aperçu des Segments Clients</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden; /* Ensures rounded corners apply to table content */
+        }
+        th, td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #e2e8f0; /* Light gray border */
+            text-align: left;
+        }
+        th {
+            background-color: #edf2f7; /* Light gray header */
+            font-weight: 700;
+            color: #2d3748; /* Darker text */
+            text-transform: uppercase;
+            font-size: 0.875rem; /* text-sm */
+        }
+        tr:nth-child(even) {
+            background-color: #f7fafc; /* Lighter row background */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-4">
+    <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Aperçu des Segments Clients</h1>
+
+        <nav class="flex justify-center space-x-4 mb-6">
+            <a href="{{ url_for('index') }}" class="px-4 py-2 text-blue-600 bg-blue-100 rounded-lg shadow-md hover:bg-blue-200 transition-colors">Accueil</a>
+            <a href="{{ url_for('segment_predict') }}" class="px-4 py-2 text-blue-600 bg-blue-100 rounded-lg shadow-md hover:bg-blue-200 transition-colors">Prédire le Segment</a>
+        </nav>
+        
+        <p class="text-lg text-gray-600 mb-4 text-center">
+            Voici les caractéristiques moyennes/modales de chaque segment client identifié :
+        </p>
+
+        <div class="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
+            {{ profiles_table | safe }}
+        </div>
+        
+        <p class="mt-4 text-sm text-gray-500 text-center">
+            *Les valeurs numériques sont des moyennes, et les valeurs catégorielles sont les modes (catégories les plus fréquentes) pour chaque segment.
+        </p>
+    </div>
+</body>
+</html>
