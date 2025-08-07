@@ -1,13 +1,13 @@
-#Projet : Segmentation Client Télécom et Optimisation des Offres
-#📝 Description du Projet
+# Projet : Segmentation Client Télécom et Optimisation des Offres
+## 📝 Description du Projet
 Ce projet complet vise à aider les entreprises de télécommunications à mieux comprendre leur clientèle en les divisant en segments distincts. En identifiant des groupes de clients ayant des comportements et des caractéristiques similaires, les opérateurs peuvent personnaliser leurs stratégies marketing, optimiser leurs offres de services et améliorer la satisfaction client.
 
 Le projet inclut la génération de données synthétiques, l'entraînement d'un modèle de clustering K-Means, et une application web Flask interactive pour visualiser les segments et prédire le segment d'un nouveau client.
 
-#🎯 Problème Métier Addréssé
+# 🎯 Problème Métier Addréssé
 Dans un marché concurrentiel, comprendre les besoins spécifiques des différents types de clients est crucial. Ce projet répond à la question suivante : "Comment identifier des groupes homogènes de clients pour leur proposer des offres plus pertinentes, améliorer leur fidélité et optimiser les efforts marketing ?"
 
-#✨ Fonctionnalités
+# ✨ Fonctionnalités
 Génération de Données Synthétiques : Crée un jeu de données réaliste de clients télécoms pour simuler un scénario réel.
 
 Modèle de Segmentation (Clustering K-Means) : Entraîne un modèle pour regrouper les clients en segments distincts basés sur leurs caractéristiques.
@@ -22,7 +22,7 @@ Prédiction Individuelle de Segment : Permet de saisir les informations d'un nou
 
 Robustesse des Données : Le système est conçu pour gérer les valeurs manquantes dans les données d'entrée.
 
-#💻 Technologies et Dépendances
+# 💻 Technologies et Dépendances
 Python 3.x
 
 Framework Web : Flask
@@ -51,7 +51,7 @@ telecom_segmentation_project/
     ├── telecom_segment_predict.html
     └── telecom_segments_overview.html
 
-#🚀 Étapes de Réalisation du Projet (De A à Z)
+# 🚀 Étapes de Réalisation du Projet (De A à Z)
 Suivez ces étapes pour mettre en place et exécuter le projet.
 
 #1. Génération des Données
@@ -109,10 +109,10 @@ python app.py
 
 Output attendu : L'application démarrera et sera accessible via votre navigateur web.
 
-#📊 Explication de l'Output (Résultats)
+# 📊 Explication de l'Output (Résultats)
 L'application Flask propose deux types d'outputs principaux :
 
-1. Aperçu des Segments
+1. ** Aperçu des Segments **
 Page : /segments_overview (accessible depuis la page d'accueil)
 
 Description : Cette page affiche un tableau récapitulatif des caractéristiques moyennes (pour les numériques) et des catégories les plus fréquentes (pour les catégorielles) de chaque segment client identifié par le modèle K-Means.
